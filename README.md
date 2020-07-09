@@ -39,7 +39,7 @@ This checks the connectivity by connecting to the endpoint `https://shapes.appro
     <img src="readme-images/shapes-bad.png" width="256" title="Shapes Bad">
 </p>
 
-This contacts `https://shapes.approov.io/v2/shapes` to get the name of a random shape. It gets the http status code 404 (`Not Found`) because this endpoint is protected with an Approov token. Next, you will add Approov into the app so that it can generate valid Approov tokens and get shapes.
+This contacts `https://shapes.approov.io/v2/shapes` to get the name of a random shape. It gets the http status code 400 (`Bad Request`) because this endpoint is protected with an Approov token. Next, you will add Approov into the app so that it can generate valid Approov tokens and get shapes.
 
 ## ADD THE APPROOV SDK ENABLED HTTP CLIENT
 
@@ -163,6 +163,8 @@ registering app ShapesApp
  S6YWfSzDZEJYF4MrJRksDFq5Qj96OnVhq6pU9KUaLDw=com.companyname.ShapesApp-1.0[1.0]-4359  SDK:iOS(2.3.0)
 registration successful
 ```
+
+At the time of writing this README there is a bug in the latest version of `Xamarin.Forms` (Version="4.7.0.1080") where [building fails de to problems with AndroidManifest file](https://github.com/xamarin/Xamarin.Forms/issues/11233). Please follow the solution in the bug report to build the `ShapesApp` apk file or use the provided `Xamarin.Forms` package version (Version="4.5.0.356").
 
 ## RUNNING THE SHAPES APP WITH APPROOV
 
