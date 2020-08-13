@@ -43,7 +43,7 @@ This contacts `https://shapes.approov.io/v2/shapes` to get the name of a random 
 
 ## ADD THE APPROOV SDK ENABLED HTTP CLIENT
 
-The ApproovSDK makes use of a custom `HttpClient` implementation, `ApproovHttpClient` and it is available as a NuGet package in the default repository `nuget.org`. Since the `ApproovHttpClient` uses platform specific code you will need to add the NuGet packages to the `ShapesApp.Android` and `ShapesApp.iOS` projects instead of the generic `ShapesApp` project. Select `Project` and `Manage NuGet Packages...` then select `Browse` and search for the `ApproovHttpClient` package. Select and install the package.
+The ApproovSDK makes use of a custom `HttpClient` implementation, `ApproovHttpClient` and it is available as a NuGet package in the default repository `nuget.org`. Since the `ApproovHttpClient` uses platform specific code you will need to add the NuGet packages to the `ShapesApp.Android` and `ShapesApp.iOS` projects instead of the generic `ShapesApp` project. Select `Project` and `Manage NuGet Packages...` then select `Browse` and search for the `ApproovHttpClient` package.
 
 ![Add ApproovSDK Package](readme-images/add-http-client-package.png)
 
@@ -51,9 +51,11 @@ You will also need to install the corresponding iOS/Android implementations `App
 
 ![Add HttpClient Package](readme-images/add-http-platform-package.png)
 
+Select and install both packages.
+
 ## ADD THE APPROOV SDK
 
-The ApproovSDK is available as a NuGet package and at the time of writing this quickstart, the packages names and versions are:  and `ApproovSDK`(2.3.0.9).
+The ApproovSDK is available as a NuGet package and at the time of writing this quickstart, the packages name and version is `ApproovSDK`(2.4.0).
 
 ![Add ApproovSDK Package](readme-images/add-approovsdk-package.png)
 
