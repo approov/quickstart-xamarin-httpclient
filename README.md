@@ -20,13 +20,40 @@ Select and install both packages.
 
 ## ADDING THE APPROOV SDK
 
-The ApproovSDK is available as a NuGet package and at the time of writing this quickstart, the packages name and version is `ApproovSDK`(2.4.0).
+The Approov SDK is available as a NuGet package in the default repository `nuget.org`,  the packages name being `ApproovSDK`.
 
 ![Add ApproovSDK Package](readme-images/add-approovsdk-package.png)
 
 Your project structure should now look like this:
 
 ![Final Project View](readme-images/final-project-view.png)
+
+
+## USING THE ApproovHttpClient
+
+The Approov SDk relies on a modified `HttpClient` class, `ApproovHttpClient` which mimics most of the original functionality and is subclassed by the platform specific `IosApproovHttpClient` and `AndroidApproovHttpClient`. The only requirement is instantiating the platform specific client with an additional configuration string, specific to your account, obtained by the `approov` command line utility (it will be something like #123456#K/XPlLtfcwnWkzv99Wj5VmAxo4CrU267J1KlQyoz8Qo=). Instantiating the platform specific clients can be done like so:
+
+```C#
+string approovSDKConfig = "#123456#K/XPlLtfcwnWkzv99Wj5VmAxo4CrU267J1KlQyoz8Qo=";            
+httpClient = new IosApproovHttpClient(approovSDKConfig)
+{
+    BaseAddress = new Uri("https://shapes.approov.io")
+};
+HttpResponseMessage response = await httpClient.GetAsync("/v2/shapes")
+```
+
+or for Android:
+
+```C#
+string approovSDKConfig = "#123456#K/XPlLtfcwnWkzv99Wj5VmAxo4CrU267J1KlQyoz8Qo=";            
+httpClient = new AndroidApproovHttpClient(approovSDKConfig)
+{
+    BaseAddress = new Uri("https://shapes.approov.io")
+};
+HttpResponseMessage response = await httpClient.GetAsync("/v2/shapes")
+```
+
+The `ApproovHttpClient` implementation and its subclasses mimic the original `HttpClient` behaviour but with an additional call to the Approov servers. To explore additional options on how to configure and use `ApproovHttpClient` classes go to [Next Steps](https://github.com/approov/quickstart-xamarin-httpclient/blob/master/NEXT-STEPS.md).
 
 ## CHECKING IT WORKS
 Initially you won't have set which API domains to protect, so the interceptor will not add anything. It will have called Approov though and made contact with the Approov cloud service. You will see logging from Approov saying `UNKNOWN_URL`.
