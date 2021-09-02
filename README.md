@@ -31,11 +31,10 @@ Your project structure should now look like this:
 
 ## USING THE ApproovHttpClient
 
-The Approov SDk relies on a modified `HttpClient` class, `ApproovHttpClient` which mimics most of the original functionality and is subclassed by the platform specific `IosApproovHttpClient` and `AndroidApproovHttpClient`. The only requirement is instantiating the platform specific client with an additional configuration string, specific to your account, obtained by the `approov` command line utility (it will be something like #123456#K/XPlLtfcwnWkzv99Wj5VmAxo4CrU267J1KlQyoz8Qo=). Instantiating the platform specific clients can be done like so:
+The Approov SDk relies on a modified `HttpClient` class, `ApproovHttpClient` which mimics most of the original functionality and is subclassed by the platform specific `IosApproovHttpClient` and `AndroidApproovHttpClient`. The only requirement is instantiating the platform specific client with an additional configuration string, specific to your account and required by the Approov SDK before being used. This will have been provided in your Approov onboarding email (it will be something like `#123456#K/XPlLtfcwnWkzv99Wj5VmAxo4CrU267J1KlQyoz8Qo=`).
 
-```C#
-string approovSDKConfig = "#123456#K/XPlLtfcwnWkzv99Wj5VmAxo4CrU267J1KlQyoz8Qo=";            
-httpClient = new IosApproovHttpClient(approovSDKConfig)
+```C#            
+httpClient = new IosApproovHttpClient("#123456#K/XPlLtfcwnWkzv99Wj5VmAxo4CrU267J1KlQyoz8Qo=")
 {
     BaseAddress = new Uri("https://shapes.approov.io")
 };
@@ -44,9 +43,8 @@ HttpResponseMessage response = await httpClient.GetAsync("/v2/shapes")
 
 or for Android:
 
-```C#
-string approovSDKConfig = "#123456#K/XPlLtfcwnWkzv99Wj5VmAxo4CrU267J1KlQyoz8Qo=";            
-httpClient = new AndroidApproovHttpClient(approovSDKConfig)
+```C#         
+httpClient = new AndroidApproovHttpClient("#123456#K/XPlLtfcwnWkzv99Wj5VmAxo4CrU267J1KlQyoz8Qo=")
 {
     BaseAddress = new Uri("https://shapes.approov.io")
 };
