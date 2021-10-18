@@ -80,8 +80,8 @@ public GetShapePlatform()
     /* Comment out the line to use Approov SDK */
     httpClient = new HttpClient();
     /* Uncomment the lines bellow to use Approov SDK */
-    //var aFactory = new ApproovHttpClientFactory();
-    //httpClient = aFactory.GetApproovHttpClient("<enter-your-config-string-here>")
+    //var factory = new ApproovHttpClientFactory();
+    //httpClient = factory.GetApproovHttpClient("<enter-your-config-string-here>")
 ```
 Change the commented out lines so the code becomes:
 ```C#
@@ -94,8 +94,8 @@ public GetShapePlatform()
     /* Comment out the line to use Approov SDK */
     //httpClient = new HttpClient();
     /* Uncomment the lines bellow to use Approov SDK */
-    var aFactory = new ApproovHttpClientFactory();
-    httpClient = aFactory.GetApproovHttpClient("<enter-your-config-string-here>")
+    var factory = new ApproovHttpClientFactory();
+    httpClient = factory.GetApproovHttpClient("<enter-your-config-string-here>")
 ```
 
 The Approov SDK needs a configuration string to identify the account associated with the app. It will have been provided in the Approov onboarding email (it will be something like `#123456#K/XPlLtfcwnWkzv99Wj5VmAxo4CrU267J1KlQyoz8Qo=`). Copy this string replacing the text `<enter-your-config-string-here>`.
