@@ -31,7 +31,7 @@ Your project structure should now look like this:
 
 ## USING THE ApproovHttpClient
 
-The Approov SDk relies on a modified `HttpClient` class, `ApproovHttpClient` which mimics most of the original functionality and is subclassed by the platform specific `IosApproovHttpClient` and `AndroidApproovHttpClient`. A Factory Method Patern is used to instantiate the platform specific clients with the additional requirement of a configuration string, specific to your account and required by the Approov SDK before being used. This will have been provided in your Approov onboarding email (it will be something like `#123456#K/XPlLtfcwnWkzv99Wj5VmAxo4CrU267J1KlQyoz8Qo=`).
+The Approov SDk relies on a modified `HttpClient` class, `ApproovHttpClient` which mimics most of the original functionality and is subclassed by the platform specific `IosApproovHttpClient` and `AndroidApproovHttpClient`. A Factory Method Pattern is used to instantiate the platform specific clients with the additional requirement of a configuration string, specific to your account and required by the Approov SDK before being used. This will have been provided in your Approov onboarding email (it will be something like `#123456#K/XPlLtfcwnWkzv99Wj5VmAxo4CrU267J1KlQyoz8Qo=`).
 
 ```C#
 var aFactory = new ApproovHttpClientFactory();
