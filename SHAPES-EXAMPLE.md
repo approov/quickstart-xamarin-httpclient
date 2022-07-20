@@ -5,7 +5,7 @@ This quickstart is written specifically for native iOS apps that are written in 
 ## WHAT YOU WILL NEED
 * Access to a trial or paid Approov account
 * The `approov` command line tool [installed](https://approov.io/docs/latest/approov-installation/) with access to your account
-* [Visual Studio](https://visualstudio.microsoft.com/vs/mac/) with Xamarin extensions (Mac version 8.6.2 is used in this guide)
+* [Visual Studio](https://visualstudio.microsoft.com/vs/mac/) with Xamarin extensions (Mac version 17.0.6 is used in this guide)
 * The contents of the folder containing this README
 * An Apple mobile device with iOS 10 or higher or an Android 5.0+ device. Alternatively, iOS simulator or Android emulator would suffice
 
@@ -145,3 +145,46 @@ If you still don't get a valid shape then there are some things you can try. Rem
 * Consider using an [Annotation Policy](https://approov.io/docs/latest/approov-usage-documentation/#annotation-policies) during development to directly see why the device is not being issued with a valid token.
 * Use `approov metrics` to see [Live Metrics](https://approov.io/docs/latest/approov-usage-documentation/#live-metrics) of the cause of failure.
 * You can use a debugger and get valid Approov tokens on a specific device by ensuring your device [always passes](https://approov.io/docs/latest/approov-usage-documentation/#adding-a-device-security-policy).
+
+## SHAPES APP WITH SECRETS PROTECTION
+
+This section provides an illustration of an alternative option for Approov protection if you are not able to modify the backend to add an Approov Token check. 
+
+Firstly, revert any previous change to `shapesURL` to using `https://shapes.approov.io/v1/shapes/` that simply checks for an API key. The `shapes_api_key` should also be changed to `shapes_api_key_placeholder`, removing the actual API key out of the code:
+
+![Shapes V1 Endpoint](readme-images/shapes-v1-endpoint.png)
+
+Next we enable the [Secure Strings](https://approov.io/docs/latest/approov-usage-documentation/#secure-strings) feature:
+
+```
+approov secstrings -setEnabled
+```
+
+> Note that this command requires an [admin role](https://approov.io/docs/latest/approov-usage-documentation/#account-access-roles).
+
+You must inform Approov that it should map `shapes_api_key_placeholder` to `yXClypapWNHIifHUWmBIyPFAm` (the actual API key) in requests as follows:
+
+```
+approov secstrings -addKey shapes_api_key_placeholder -predefinedValue yXClypapWNHIifHUWmBIyPFAm
+```
+
+> Note that this command also requires an [admin role](https://approov.io/docs/latest/approov-usage-documentation/#account-access-roles).
+
+Next we need to inform Approov that it needs to substitute the placeholder value for the real API key on the `Api-Key` header. Only a single line of code needs to be changed in `GetShapePlatform.cs`:
+
+```C#
+httpClient.DefaultRequestHeaders.Add("Api-Key", "shapes_api_key_placeholder");
+```
+
+Build and run the app again to ensure that the `app-debug.apk` or `shapes-app.ipa` in the generated build outputs is up to date. You need to register the updated app with Approov. Change directory to the top level of the `shapes-app` project and then register the app with:
+
+```
+approov registration -add app/build/outputs/apk/debug/app-debug.apk
+```
+Run the app again without making any changes to the app and press the `Get Shape` button. You should now see this (or another shape):
+
+<p>
+    <img src="readme-images/shapes-good.png" width="256" title="Shapes Good">
+</p>
+
+This means that the registered app is able to access the API key, even though it is no longer embedded in the app configuration, and provide it to the shapes request.
