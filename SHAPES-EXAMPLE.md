@@ -152,7 +152,16 @@ This section provides an illustration of an alternative option for Approov prote
 
 Firstly, revert any previous change to `shapesURL` to using `https://shapes.approov.io/v1/shapes/` that simply checks for an API key. The `shapes_api_key` should also be changed to `shapes_api_key_placeholder`, removing the actual API key out of the code:
 
-![Shapes V1 Endpoint](readme-images/shapes-v1-endpoint.png)
+```C#
+* The Shapes URL */
+string shapesURL = "https://shapes.approov.io/v1/shapes/";
+string shapes_api_key = "shapes_api_key_placeholder";
+....
+httpClient.DefaultRequestHeaders.Add("Api-Key", shapes_api_key);
+IosApproovHttpClient.AddSubstitutionHeader("Api-Key", null);
+// If using Android:
+AndroidApproovHttpClient.AddSubstitutionHeader("Api-Key", null);
+```
 
 Next we enable the [Secure Strings](https://approov.io/docs/latest/approov-usage-documentation/#secure-strings) feature:
 
@@ -173,7 +182,7 @@ approov secstrings -addKey shapes_api_key_placeholder -predefinedValue yXClypapW
 Next we need to inform Approov that it needs to substitute the placeholder value for the real API key on the `Api-Key` header. Only a single line of code needs to be changed in `GetShapePlatform.cs`:
 
 ```C#
-httpClient.DefaultRequestHeaders.Add("Api-Key", "shapes_api_key_placeholder");
+string shapes_api_key = "shapes_api_key_placeholder";
 ```
 
 Build and run the app again to ensure that the `app-debug.apk` or `shapes-app.ipa` in the generated build outputs is up to date. You need to register the updated app with Approov. Change directory to the top level of the `shapes-app` project and then register the app with:

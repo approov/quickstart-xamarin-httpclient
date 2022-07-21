@@ -14,6 +14,8 @@ namespace ShapesApp.iOS
     {
         /* The Shapes URL */
         string shapesURL = "https://shapes.approov.io/v1/shapes/";
+        /* The secret key: REPLACE with shapes_api_key_placeholder if using SECRET-PROTECTION */
+        string shapes_api_key = "yXClypapWNHIifHUWmBIyPFAm";
         /* Comment out the line to use Approov SDK */
         private static HttpClient httpClient;
         /* Uncomment the line to use Approov SDK */
@@ -22,12 +24,12 @@ namespace ShapesApp.iOS
         {
             /* Comment out the line to use Approov SDK */
             httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Add("Api-Key",shapes_api_key);
             /* Uncomment the lines bellow to use Approov SDK */
             //var factory = new ApproovHttpClientFactory();
             //httpClient = factory.GetApproovHttpClient("<enter-your-config-string-here>");
             // Add substitution header: Uncomment if using SECRET-PROTECTION
             //IosApproovHttpClient.AddSubstitutionHeader("Api-Key", null);
-            //httpClient.DefaultRequestHeaders.Add("Api-Key", "shapes_api_key_placeholder");
         }
 
         public Dictionary<string, string> GetHello()
