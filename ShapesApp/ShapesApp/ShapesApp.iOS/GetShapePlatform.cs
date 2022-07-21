@@ -25,10 +25,9 @@ namespace ShapesApp.iOS
             /* Uncomment the lines bellow to use Approov SDK */
             //var factory = new ApproovHttpClientFactory();
             //httpClient = factory.GetApproovHttpClient("<enter-your-config-string-here>");
-            // Add substitution header
+            // Add substitution header: Uncomment if using SECRET-PROTECTION
             //IosApproovHttpClient.AddSubstitutionHeader("Api-Key", null);
             //httpClient.DefaultRequestHeaders.Add("Api-Key", "shapes_api_key_placeholder");
-            //IosApproovHttpClient.AddSubstitutionQueryParam("[\\?&]api-key=([^&;]+)");
         }
 
         public Dictionary<string, string> GetHello()

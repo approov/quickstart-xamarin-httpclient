@@ -27,10 +27,9 @@ namespace ShapesApp.Droid
             //var factory = new ApproovHttpClientFactory();
             //httpClient = factory.GetApproovHttpClient("<enter-your-config-string-here>")
             httpClient.BaseAddress = new Uri("https://shapes.approov.io");
-            // Add substitution header
+            // Add substitution header: Uncomment if using SECRET-PROTECTION
             //AndroidApproovHttpClient.AddSubstitutionHeader("Api-Key", null);
             //httpClient.DefaultRequestHeaders.Add("Api-Key", "shapes_api_key_placeholder");
-            //AndroidApproovHttpClient.AddSubstitutionQueryParam("[\\?&]api-key=([^&;]+)");
         }
 
         public Dictionary<string, string> GetHello()
