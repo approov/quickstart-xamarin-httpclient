@@ -4,6 +4,8 @@ using ShapesApp.Droid;
 using System;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+/* Uncomment the line to use Approov SDK */
+//using Approov;
 
 [assembly: Xamarin.Forms.Dependency(
           typeof(GetShapePlatform))]
@@ -11,6 +13,8 @@ namespace ShapesApp.Droid
 {
     public class GetShapePlatform : IGetShape
     {
+        /* The Shapes URL */
+        string shapesURL = "https://shapes.approov.io/v1/shapes/";
         /* Comment out the line to use Approov SDK */
         private static HttpClient httpClient;
         /* Uncomment the line to use Approov SDK */
@@ -23,6 +27,10 @@ namespace ShapesApp.Droid
             //var factory = new ApproovHttpClientFactory();
             //httpClient = factory.GetApproovHttpClient("<enter-your-config-string-here>")
             httpClient.BaseAddress = new Uri("https://shapes.approov.io");
+            // Add substitution header
+            //AndroidApproovHttpClient.AddSubstitutionHeader("Api-Key", null);
+            //httpClient.DefaultRequestHeaders.Add("Api-Key", "shapes_api_key_placeholder");
+            //AndroidApproovHttpClient.AddSubstitutionQueryParam("[\\?&]api-key=([^&;]+)");
         }
 
         public Dictionary<string, string> GetHello()
@@ -33,7 +41,7 @@ namespace ShapesApp.Droid
 
         private async Task<Dictionary<string, string>> GetHelloAsync()
         {
-            HttpResponseMessage response = await httpClient.GetAsync("/v1/hello").ConfigureAwait(false);
+            HttpResponseMessage response = await httpClient.GetAsync("https://shapes.approov.io/v1/hello").ConfigureAwait(false);
             if (response.IsSuccessStatusCode)
             {
                 var cont = await response.Content.ReadAsStringAsync();
@@ -55,7 +63,7 @@ namespace ShapesApp.Droid
 
         private async Task<Dictionary<string, string>> GetShapeAsync()
         {
-            HttpResponseMessage response = await httpClient.GetAsync("/v2/shapes").ConfigureAwait(false);
+            HttpResponseMessage response = await httpClient.GetAsync(shapesURL).ConfigureAwait(false);
             if (response.IsSuccessStatusCode)
             {
                 var cont = await response.Content.ReadAsStringAsync();

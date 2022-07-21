@@ -81,7 +81,7 @@ namespace ShapesApp
                 if (!responseData.ContainsKey("text"))
                 {
                     SetStatusImageFromString("confused");
-                    StatusLabelProperty = responseData["response"];
+                    //StatusLabelProperty = responseData["response"];
                 }
                 else
                 {
@@ -111,7 +111,7 @@ namespace ShapesApp
                 {
                     SetStatusImageFromString(responseData["shape"].ToLower());
                 }
-                StatusLabelProperty = responseData["response"];
+                //StatusLabelProperty = responseData["response"];
 
             }
             catch (Exception e)
