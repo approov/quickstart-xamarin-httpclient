@@ -24,6 +24,12 @@ Note, some versions of Android Studio save the app in `app/build/intermediates/a
 
 Note, on Windows you need to substitute \ for / in the above command.
 
+If you are targetting iOS, select the `Archive` option of Visual Studio (this option will not be available if using the simulator for iOS). Enabling codesigning is beyond the scope of this guide, if you need assistance please check [Microsoft's codesigning support](https://docs.microsoft.com/en-us/xamarin/ios/deploy-test/provisioning/). Make sure you have selected the correct project (Shapes.App.iOS), build mode (Release) and target device (Generic Device) settings. Select the `Build` menu and then `Archive for Publishing`. Once the archive file is ready you can either `Ad Hoc`, `Enterprise` or `Play Store` depending on the platform, sign it and save it to disk. Locate the `.ipa` file and register it with the Approov service:
+
+```
+$ approov registration -add ShapesApp.ipa
+```
+
 > **IMPORTANT:** The registration takes up to 30 seconds to propagate across the Approov Cloud Infrastructure, therefore don't try to run the app again before this time has elapsed. During development of your app you can ensure it [always passes](https://approov.io/docs/latest/approov-usage-documentation/#adding-a-device-security-policy) on your device to not have to register the APK each time you modify it.
 
 [Managing Registrations](https://approov.io/docs/latest/approov-usage-documentation/#managing-registrations) provides more details for app registrations, especially for releases to the Play Store. Note that you may also need to apply specific [Android Obfuscation](https://approov.io/docs/latest/approov-usage-documentation/#android-obfuscation) rules for your app when releasing it.
@@ -35,7 +41,7 @@ See [Exploring Other Approov Features](https://approov.io/docs/latest/approov-us
 The default header name of `Approov-Token` can be changed as follows:
 
 ```C#
-ApproovHttpClient.SetTokenHeaderAndPrefix("Authorization", "Bearer ");
+ApproovService.SetTokenHeaderAndPrefix("Authorization", "Bearer ");
 ```
 
 The first parameter is the new header name and the second a prefix to be added to the Approov token. This is primarily for integrations where the Approov Token JWT might need to be prefixed with `Bearer` and passed in the `Authorization` header.
@@ -44,16 +50,16 @@ The first parameter is the new header name and the second a prefix to be added t
 If want to use [Token Binding](https://approov.io/docs/latest/approov-usage-documentation/#token-binding) then set the header holding the value to be used for binding as follows:
 
 ```C#
-ApproovHttpClient.SetBindingHeader("Authorization");
+ApproovService.SetBindingHeader("Authorization");
 ```
 
 In this case it means that the value of `Authorization` holds the token value to be bound. This only needs to be called once. On subsequent requests the value of the specified header is read and its value set as the token binding value. Note that you should select a header whose value does not typically change from request to request, as each change requires a new Approov token to be fetched.
 
 ### Prefetching
-If you wish to reduce the latency associated with fetching the first Approov token, then make this call immediately after initializing `ApproovHttpClient`:
+If you wish to reduce the latency associated with fetching the first Approov token, then make this call immediately after initializing `ApproovService`:
 
 ```C#
-ApproovHttpClient.Prefetch();
+ApproovService.Prefetch();
 ```
 
 This initiates the process of fetching an Approov token as a background task, so that a cached token is available immediately when subsequently needed, or at least the fetch time is reduced. Note that there is no point in performing a prefetch if you are using token binding.
@@ -67,14 +73,14 @@ approov secstrings -setEnabled
 
 > Note that this command requires an [admin role](https://approov.io/docs/latest/approov-usage-documentation/#account-access-roles).
 
-Here is an example of calling the appropriate method in `ApproovHttpClient`:
+Here is an example of calling the appropriate method in `ApproovService`:
 
 ```C#
 
 ...
 
 try {
-    IosApproovHttpClient.Precheck();
+    ApproovService.Precheck();
 }
 catch(RejectionException e) {
     // failure due to the attestation being rejected, e.ARC and e.Rejectionreasons may be used to present information to the user

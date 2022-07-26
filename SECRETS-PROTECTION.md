@@ -48,10 +48,10 @@ approov secstrings -addKey your-placeholder -predefinedValue your-secret
 
 You can add up to 16 different secret values to be substituted in this way.
 
-If the secret value is provided on the header `your-header` then it is necessary to notify the `ApproovHttpClient` that the header is subject to substitution. You do this by making the call once, after initialization:
+If the secret value is provided on the header `your-header` then it is necessary to notify the `ApproovService` that the header is subject to substitution. You do this by making the call once, after initialization:
 
 ```Java
-ApproovHttpClient.AddSubstitutionHeader("your-header", null);
+ApproovService.AddSubstitutionHeader("your-header", null);
 ```
 
 With this in place the Approov interceptor should replace the `your-placeholder` with the `your-secret` as required when the app passes attestation. Since the mapping lookup is performed on the placeholder value you have the flexibility of providing different secrets on different API calls, even if they are passed with the same header name.
@@ -60,10 +60,10 @@ Since earlier released versions of the app may have already leaked `your-secret`
 
 You can see a [worked example](https://github.com/approov/quickstart-xamarin-httpclient/blob/master/SHAPES-EXAMPLE.md#shapes-app-with-secrets-protection) for the Shapes app.
 
-If the secret value is provided as a parameter in a URL query string with the name `your-param` then it is necessary to notify the `ApproovHttpClient` that the query parameter is subject to substitution. You do this by making the call once, after initialization:
+If the secret value is provided as a parameter in a URL query string with the name `your-param` then it is necessary to notify the `ApproovService` that the query parameter is subject to substitution. You do this by making the call once, after initialization:
 
 ```Java
-ApproovHttpClient.AddSubstitutionQueryParam("your-param");
+ApproovService.AddSubstitutionQueryParam("your-param");
 ```
 
 After this the Approov interceptor should transform any instance of a URL such as `https://your.domain/endpoint?your-param=your-placeholder` into `https://your.domain/endpoint?your-param=your-secret`.
@@ -78,6 +78,12 @@ approov registration -add app/build/outputs/apk/debug/app-debug.apk
 Note, some versions of Android Studio save the app in `app/build/intermediates/apk/debug/app-debug.apk`.
 
 Note, on Windows you need to substitute \ for / in the above command.
+
+If you are targetting iOS, select the `Archive` option of Visual Studio (this option will not be available if using the simulator for iOS). Enabling codesigning is beyond the scope of this guide, if you need assistance please check [Microsoft's codesigning support](https://docs.microsoft.com/en-us/xamarin/ios/deploy-test/provisioning/). Make sure you have selected the correct project (Shapes.App.iOS), build mode (Release) and target device (Generic Device) settings. Select the `Build` menu and then `Archive for Publishing`. Once the archive file is ready you can either `Ad Hoc`, `Enterprise` or `Play Store` depending on the platform, sign it and save it to disk. Locate the `.ipa` file and register it with the Approov service:
+
+```
+$ approov registration -add ShapesApp.ipa
+```
 
 > **IMPORTANT:** The registration takes up to 30 seconds to propagate across the Approov Cloud Infrastructure, therefore don't try to run the app again before this time has elapsed. During development of your app you can ensure it [always passes](https://approov.io/docs/latest/approov-usage-documentation/#adding-a-device-security-policy) on your device to not have to register the APK each time you modify it.
 
@@ -105,7 +111,7 @@ See [Exploring Other Approov Features](https://approov.io/docs/latest/approov-us
 In some cases the value to be substituted on a header may be prefixed by some fixed string. A common case is the presence of `Bearer` included in an authorization header to indicate the use of a bearer token. In this case you can specify a prefix as follows:
 
 ```C#
-ApproovHttpClient.AddSubstitutionHeader("Authorization", "Bearer ");
+ApproovService.AddSubstitutionHeader("Authorization", "Bearer ");
 ```
 
 This causes the `Bearer` prefix to be stripped before doing the lookup for the substitution, and the `Bearer` prefix added to the actual secret value as part of the substitution.
@@ -128,11 +134,11 @@ String newDef;
 String secret;
 // define key and newDef here
 try {
-    secret = ApproovService.fetchSecureString(key, newDef);
+    secret = ApproovService.FetchSecureString(key, newDef);
 }
 catch(ApproovRejectionException e) {
-    // failure due to the attestation being rejected, e.getARC() and e.getRejectionReasons() may be used to present information to the user
-    // (note e.getRejectionReasons() is only available if the feature is enabled, otherwise it is always an empty string)
+    // failure due to the attestation being rejected, e.ARC and e.Rejectionreasons may be used to present information to the user
+    // (note e.Rejectionreasons is only available if the feature is enabled, otherwise it is always an empty string)
 }
 catch(ApproovNetworkException e) {
     // failure due to a potentially temporary networking issue, allow for a user initiated retry
@@ -148,22 +154,22 @@ to lookup a secure string with the given `key`, returning `null` if it is not de
 This method is also useful for providing runtime secrets protection when the values are not passed on headers. Secure strings set using this method may also be looked up using subsequent networking interceptor header substitutions. 
 
 ### Prefetching
-If you wish to reduce the latency associated with substituting the first secret, then make this call immediately after initializing `ApproovHttpClient`:
+If you wish to reduce the latency associated with substituting the first secret, then make this call immediately after initializing `ApproovService`:
 
 ```C#
-ApproovHttpClient.Prefetch();
+ApproovService.Prefetch();
 ```
 
 This initiates the process of fetching the required information as a background task, so that it is available immediately when subsequently needed. Note the information will automatically expire after approximately 5 minutes.
 
 ### Prechecking
-You may wish to do an early check in your app to present a warning to the user if it is not going to be able to access secrets because it fails the attestation process. Here is an example of calling the appropriate method in `ApproovHttpClient`:
+You may wish to do an early check in your app to present a warning to the user if it is not going to be able to access secrets because it fails the attestation process. Here is an example of calling the appropriate method in `ApproovService`:
 
 ```C#
 ....
 
 try {
-    IosApproovHttpClient.Precheck();
+    ApproovService.Precheck();
 }
 catch(RejectionException e) {
     // failure due to the attestation being rejected, e.ARC and e.Rejectionreasons may be used to present information to the user
