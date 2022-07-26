@@ -1,15 +1,15 @@
 # Reference
-Both iOS and Android applications can access the Approov SDK enabled API by using the static methods defined in the `ApproovService` class. The `ApproovService` class subclasses `ApproovHttpClient` which is a subclass of `HttpClient`. This provides a reference for all of the static methods defined in both `ApproovHttpClient` and `ApproovService`. These are available if you import:
+Both iOS and Android applications can access the Approov SDK enabled API by using the static methods defined in the `ApproovService` class. This document provides a reference for all of the static methods defined in `ApproovService`. These are available if you import:
 
 ```C#
 using Approov;
 ```
 
-Various methods may throw an `ApproovSDKException` if there is a problem. The property `Message` provides a descriptive message.
+Various methods may throw an `ApproovException` if there is a problem. The property `Message` provides a descriptive message.
 
-If a method throws an `NetworkingErrorException` (a subclass of `ApproovSDKException`) then this indicates the problem was caused by a networking issue, and a user initiated retry should be allowed.
+If a method throws an `NetworkingErrorException` (a subclass of `ApproovException`) then this indicates the problem was caused by a networking issue, and a user initiated retry should be allowed.
 
-If a method throws an `RejectionException` (a subclass of `ApproovSDKException`) the this indicates the problem was that the app failed attestation. An additional property, `ARC`, provides the [Attestation Response Code](https://approov.io/docs/latest/approov-usage-documentation/#attestation-response-code), which could be provided to the user for communication with your app support to determine the reason for failure, without this being revealed to the end user. The property `Rejectionreasons` provides the [Rejection Reasons](https://approov.io/docs/latest/approov-usage-documentation/#rejection-reasons) if the feature is enabled, providing a comma separated list of reasons why the app attestation was rejected.
+If a method throws an `RejectionException` (a subclass of `ApproovException`) the this indicates the problem was that the app failed attestation. An additional property, `ARC`, provides the [Attestation Response Code](https://approov.io/docs/latest/approov-usage-documentation/#attestation-response-code), which could be provided to the user for communication with your app support to determine the reason for failure, without this being revealed to the end user. The property `RejectionReasons` provides the [Rejection Reasons](https://approov.io/docs/latest/approov-usage-documentation/#rejection-reasons) if the feature is enabled, providing a comma separated list of reasons why the app attestation was rejected.
 
 ## Initialize
 Initializes the Approov SDK and thus enables the Approov features. The `config` will have been provided in the initial onboarding or email or can be [obtained](https://approov.io/docs/latest/approov-usage-documentation/#getting-the-initial-sdk-configuration) using the approov CLI. This will generate an error if a second attempt is made at initialization with a different `config`.
@@ -42,7 +42,7 @@ ApproovService.SetProceedOnNetworkFailure(bool proceed)
 
 Note that this should be used with *CAUTION* because it may allow a connection to be established before any dynamic pins have been received via Approov, thus potentially opening the channel to a MitM.
 
-## SetApproovHeader
+## SetTokenHeaderAndPrefix
 Sets the `header` that the Approov token is added on, as well as an optional `prefix` String (such as "`Bearer `"). Set `prefix` to the empty string if it is not required. By default the token is provided on `Approov-Token` with no prefix.
 
 ```C#
@@ -111,10 +111,10 @@ ApproovService.Prefetch()
 Performs a precheck to determine if the app will pass attestation. This requires [secure strings](https://approov.io/docs/latest/approov-usage-documentation/#secure-strings) to be enabled for the account, although no strings need to be set up. 
 
 ```C#
-ApproovService.Precheck() throws ApproovSDKException
+ApproovService.Precheck() throws ApproovException
 ```
 
-This throws `ApproovSDKException` if the precheck failed. This will likely require network access so may take some time to complete, and should not be called from the UI thread.
+This throws `ApproovException` if the precheck failed. This will likely require network access so may take some time to complete, and should not be called from the UI thread.
 
 ## GetDeviceID
 Gets the [device ID](https://approov.io/docs/latest/approov-usage-documentation/#extracting-the-device-id) used by Approov to identify the particular device that the SDK is running on. Note that different Approov apps on the same device will return a different ID. Moreover, the ID may be changed by an uninstall and reinstall of the app.
@@ -134,34 +134,34 @@ ApproovService.SetDataHashInToken(string data)
 Performs an Approov token fetch for the given `url`. This should be used in situations where it is not possible to use the networking interception to add the token. Note that the returned token should NEVER be cached by your app, you should call this function when it is needed.
 
 ```C#
-ApproovService.FetchToken(string url) throws ApproovSDKException
+ApproovService.FetchToken(string url) throws ApproovException
 ```
 
-This throws `ApproovSDKException` if there was a problem obtaining an Approov token. This may require network access so may take some time to complete, and should not be called from the UI thread.
+This throws `ApproovException` if there was a problem obtaining an Approov token. This may require network access so may take some time to complete, and should not be called from the UI thread.
 
 ## GetMessageSignature
 Gets the [message signature](https://approov.io/docs/latest/approov-usage-documentation/#message-signing) for the given `message`. This is returned as a base64 encoded signature. This feature uses an account specific message signing key that is transmitted to the SDK after a successful fetch if the facility is enabled for the account. Note that if the attestation failed then the signing key provided is actually random so that the signature will be incorrect. An Approov token should always be included in the message being signed and sent alongside this signature to prevent replay attacks.
 
 ```C#
-ApproovService.GetMessageSignature(string url) throws ApproovSDKException
+ApproovService.GetMessageSignature(string url) throws ApproovException
 ```
 
-This throws `ApproovSDKException` if there was a problem obtaining a signature.
+This throws `ApproovException` if there was a problem obtaining a signature.
 
 ## FetchSecureString
 Fetches a [secure string](https://approov.io/docs/latest/approov-usage-documentation/#secure-strings) with the given `key` if `newDef` is `null`. Returns `null` if the `key` secure string is not defined. If `newDef` is not `null` then a secure string for the particular app instance may be defined. In this case the new value is returned as the secure string. Use of an empty string for `newDef` removes the string entry. Note that the returned string should NEVER be cached by your app, you should call this function when it is needed.
 
 ```C#
-ApproovService.FetchSecureString(string key, string newDef) throws ApproovSDKException
+ApproovService.FetchSecureString(string key, string newDef) throws ApproovException
 ```
 
-This throws `ApproovSDKException` if there was a problem obtaining the secure string. This may require network access so may take some time to complete, and should not be called from the UI thread.
+This throws `ApproovException` if there was a problem obtaining the secure string. This may require network access so may take some time to complete, and should not be called from the UI thread.
 
 ## FetchCustomJWT
 Fetches a [custom JWT](https://approov.io/docs/latest/approov-usage-documentation/#custom-jwts) with the given marshaled JSON `payload`.
 
 ```C#
-ApproovService.FetchCustomJWT(string payload)
+ApproovService.FetchCustomJWT(string payload) throws ApproovException
 ```
 
-This throws `ApproovSDKException` if there was a problem obtaining the custom JWT. This may require network access so may take some time to complete, and should not be called from the UI thread.
+This throws `ApproovException` if there was a problem obtaining the custom JWT. This may require network access so may take some time to complete, and should not be called from the UI thread.

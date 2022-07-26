@@ -102,7 +102,7 @@ approov policy -setRejectionReasons on
 
 > Note that this command requires an [admin role](https://approov.io/docs/latest/approov-usage-documentation/#account-access-roles).
 
-You will then be able to use `Rejectionreasons` on an `RejectionException` to obtain a comma separated list of [device properties](https://approov.io/docs/latest/approov-usage-documentation/#device-properties) responsible for causing the rejection.
+You will then be able to use `RejectionReasons` on an `RejectionException` to obtain a comma separated list of [device properties](https://approov.io/docs/latest/approov-usage-documentation/#device-properties) responsible for causing the rejection.
 
 ## FURTHER OPTIONS
 See [Exploring Other Approov Features](https://approov.io/docs/latest/approov-usage-documentation/#exploring-other-approov-features) for information about additional Approov features you may wish to try.
@@ -137,8 +137,8 @@ try {
     secret = ApproovService.FetchSecureString(key, newDef);
 }
 catch(ApproovRejectionException e) {
-    // failure due to the attestation being rejected, e.ARC and e.Rejectionreasons may be used to present information to the user
-    // (note e.Rejectionreasons is only available if the feature is enabled, otherwise it is always an empty string)
+    // failure due to the attestation being rejected, e.ARC and e.RejectionReasons may be used to present information to the user
+    // (note e.RejectionReasons is only available if the feature is enabled, otherwise it is always an empty string)
 }
 catch(ApproovNetworkException e) {
     // failure due to a potentially temporary networking issue, allow for a user initiated retry
@@ -172,8 +172,8 @@ try {
     ApproovService.Precheck();
 }
 catch(RejectionException e) {
-    // failure due to the attestation being rejected, e.ARC and e.Rejectionreasons may be used to present information to the user
-    // (note e.Rejectionreasons is only available if the feature is enabled, otherwise it is always an empty string)
+    // failure due to the attestation being rejected, e.ARC and e.RejectionReasons may be used to present information to the user
+    // (note e.RejectionReasons is only available if the feature is enabled, otherwise it is always an empty string)
 }
 catch(NetworkingErrorException e) {
     // failure due to a potentially temporary networking issue, allow for a user initiated retry

@@ -59,7 +59,7 @@ In this case it means that the value of `Authorization` holds the token value to
 If you wish to reduce the latency associated with fetching the first Approov token, then make this call immediately after initializing `ApproovService`:
 
 ```C#
-ApproovService.Prefetch();
+ApproovService.Prefetch()
 ```
 
 This initiates the process of fetching an Approov token as a background task, so that a cached token is available immediately when subsequently needed, or at least the fetch time is reduced. Note that there is no point in performing a prefetch if you are using token binding.
@@ -83,8 +83,8 @@ try {
     ApproovService.Precheck();
 }
 catch(RejectionException e) {
-    // failure due to the attestation being rejected, e.ARC and e.Rejectionreasons may be used to present information to the user
-    // (note e.Rejectionreasons is only available if the feature is enabled, otherwise it is always an empty string)
+    // failure due to the attestation being rejected, e.ARC and e.RejectionReasons may be used to present information to the user
+    // (note e.RejectionReasons is only available if the feature is enabled, otherwise it is always an empty string)
 }
 catch(NetworkingErrorException e) {
     // failure due to a potentially temporary networking issue, allow for a user initiated retry
