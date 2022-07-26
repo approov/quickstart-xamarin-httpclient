@@ -33,19 +33,13 @@ This checks the connectivity by connecting to the endpoint `https://shapes.appro
     <img src="readme-images/shapes-bad.png" width="256" title="Shapes Bad">
 </p>
 
-This contacts `https://shapes.approov.io/v2/shapes` to get the name of a random shape. It gets the http status code 400 (`Bad Request`) because this endpoint is protected with an Approov token. Next, you will add Approov into the app so that it can generate valid Approov tokens and get shapes.
+This contacts `https://shapes.approov.io/v1/shapes` to get the name of a random shape. It gets the http status code 200  because this endpoint is protected with a secret key which we hard coded in the source code. Next, you will add Approov into the app so that it can generate valid Approov tokens and get shapes using an approov token.
 
 ## ADD THE APPROOV SDK ENABLED HTTP CLIENT
 
 The ApproovSDK makes use of a custom `HttpClient` implementation, `ApproovHttpClient` and it is available as a NuGet package in the default repository `nuget.org`. Since the `ApproovHttpClient` uses platform specific code you will need to add the NuGet packages to the `ShapesApp.Android` and `ShapesApp.iOS` projects instead of the generic `ShapesApp` project. Select `Project` and `Manage NuGet Packages...` then select `Browse` and search for the `ApproovHttpClient` package.
 
 ![Add ApproovSDK Package](readme-images/add-http-client-package.png)
-
-You will also need to install the corresponding iOS/Android implementations `ApproovHttpClient-Platform-Specific`.
-
-![Add HttpClient Package](readme-images/add-http-platform-package.png)
-
-Select and install both packages.
 
 ## ADD THE APPROOV SDK
 
@@ -59,12 +53,20 @@ Your project structure should now look like this:
 
 ## ENSURE THE SHAPES API IS PROTECTED
 
-In order for Approov tokens to be generated for `https://shapes.approov.io/v2/shapes` it is necessary to inform Approov about it. 
+In order for Approov tokens to be generated for `https://shapes.approov.io/v3/shapes` it is necessary to inform Approov about it. 
 ```
 $ approov api -add shapes.approov.io
 ```
-Tokens for this domain will be automatically signed with the specific secret for this domain, rather than the normal one for your account.
+Tokens for this domain will be automatically signed with the specific secret for this domain, rather than the normal one for your account. Please, change the url to point to the Approov protected endpoint:
 
+```C#
+string shapesURL = "https://shapes.approov.io/v1/shapes/";
+```
+to point to `v3`:
+
+```C#
+string shapesURL = "https://shapes.approov.io/v3/shapes/";
+```
 
 ## MODIFY THE APP TO USE APPROOV
 
@@ -80,8 +82,8 @@ public GetShapePlatform()
     /* Comment out the line to use Approov SDK */
     httpClient = new HttpClient();
     /* Uncomment the lines bellow to use Approov SDK */
-    //var factory = new ApproovHttpClientFactory();
-    //httpClient = factory.GetApproovHttpClient("<enter-your-config-string-here>")
+    //ApproovService.Initialize("<enter-your-config-string-here>");
+    //httpClient = ApproovService.CreateHttpClient();
 ```
 Change the commented out lines so the code becomes:
 ```C#
@@ -94,8 +96,8 @@ public GetShapePlatform()
     /* Comment out the line to use Approov SDK */
     //httpClient = new HttpClient();
     /* Uncomment the lines bellow to use Approov SDK */
-    var factory = new ApproovHttpClientFactory();
-    httpClient = factory.GetApproovHttpClient("<enter-your-config-string-here>")
+    ApproovService.Initialize("<enter-your-config-string-here>");
+    httpClient = ApproovService.CreateHttpClient();
 ```
 
 The Approov SDK needs a configuration string to identify the account associated with the app. It will have been provided in the Approov onboarding email (it will be something like `#123456#K/XPlLtfcwnWkzv99Wj5VmAxo4CrU267J1KlQyoz8Qo=`). Copy this string replacing the text `<enter-your-config-string-here>`.
@@ -157,10 +159,8 @@ Firstly, revert any previous change to `shapesURL` to using `https://shapes.appr
 string shapesURL = "https://shapes.approov.io/v1/shapes/";
 string shapes_api_key = "shapes_api_key_placeholder";
 ....
-httpClient.DefaultRequestHeaders.Add("Api-Key", shapes_api_key);
-IosApproovHttpClient.AddSubstitutionHeader("Api-Key", null);
-// If using Android:
-AndroidApproovHttpClient.AddSubstitutionHeader("Api-Key", null);
+ApproovService.DefaultRequestHeaders.Add("Api-Key", shapes_api_key);
+ApproovService.AddSubstitutionHeader("Api-Key", null);
 ```
 
 Next we enable the [Secure Strings](https://approov.io/docs/latest/approov-usage-documentation/#secure-strings) feature:
@@ -178,12 +178,6 @@ approov secstrings -addKey shapes_api_key_placeholder -predefinedValue yXClypapW
 ```
 
 > Note that this command also requires an [admin role](https://approov.io/docs/latest/approov-usage-documentation/#account-access-roles).
-
-Next we need to inform Approov that it needs to substitute the placeholder value for the real API key on the `Api-Key` header. Only a single line of code needs to be changed in `GetShapePlatform.cs`:
-
-```C#
-string shapes_api_key = "shapes_api_key_placeholder";
-```
 
 Build and run the app again to ensure that the `app-debug.apk` or `shapes-app.ipa` in the generated build outputs is up to date. You need to register the updated app with Approov. Change directory to the top level of the `shapes-app` project and then register the app with:
 

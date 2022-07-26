@@ -27,10 +27,10 @@ namespace ShapesApp.Droid
             httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Add("Api-Key", shapes_api_key);
             /* Uncomment the lines bellow to use Approov SDK */
-            //var factory = new ApproovHttpClientFactory();
-            //httpClient = factory.GetApproovHttpClient("<enter-your-config-string-here>")
+            //ApproovService.Initialize("<enter-your-config-string-here>");
+            //httpClient = ApproovService.CreateHttpClient();
             // Add substitution header: Uncomment if using SECRET-PROTECTION
-            //AndroidApproovHttpClient.AddSubstitutionHeader("Api-Key", null);
+            //ApproovService.AddSubstitutionHeader("Api-Key", null);
         }
 
         public Dictionary<string, string> GetHello()
