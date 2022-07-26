@@ -1,5 +1,5 @@
 # Reference
-This provides a reference for all of the static methods defined in `ApproovHttpClient` and the platform specific subclasses, `IosApproovHttpClient` and `AndroidApproovHttpClient`. These are available if you import:
+Both iOS and Android applications can access the Approov SDK enabled API by using the static methods defined in the `ApproovService` class. The `ApproovService` class subclasses `ApproovHttpClient` which is a subclass of `HttpClient`. This provides a reference for all of the static methods defined in both `ApproovHttpClient` and `ApproovService`. These are available if you import:
 
 ```C#
 using Approov;
@@ -11,30 +11,26 @@ If a method throws an `NetworkingErrorException` (a subclass of `ApproovSDKExcep
 
 If a method throws an `RejectionException` (a subclass of `ApproovSDKException`) the this indicates the problem was that the app failed attestation. An additional property, `ARC`, provides the [Attestation Response Code](https://approov.io/docs/latest/approov-usage-documentation/#attestation-response-code), which could be provided to the user for communication with your app support to determine the reason for failure, without this being revealed to the end user. The property `Rejectionreasons` provides the [Rejection Reasons](https://approov.io/docs/latest/approov-usage-documentation/#rejection-reasons) if the feature is enabled, providing a comma separated list of reasons why the app attestation was rejected.
 
-## Constructor
+## Initialize
 Initializes the Approov SDK and thus enables the Approov features. The `config` will have been provided in the initial onboarding or email or can be [obtained](https://approov.io/docs/latest/approov-usage-documentation/#getting-the-initial-sdk-configuration) using the approov CLI. This will generate an error if a second attempt is made at initialization with a different `config`.
 
 ```C#
-public AndroidApproovHttpClient(HttpMessageHandler handler, string config)
+public static void Initialize(string config)
 ```
 
-```C#
-public IosApproovHttpClient(string config)
-```
+It is possible to pass an empty `config` string to indicate that no initialization is required. Only do this if you are also using a different Approov quickstart in your app (which will use the same underlying Approov SDK) and this will have been initialized first.
 
-The preffered way to obtain an Approov enabled HttpClient, for both iOS and Android, is by using the platform specific client factory:
+The preffered way to obtain an Approov enabled HttpClient, for both iOS and Android, is by using:
 
 ```C#
-public ApproovHttpClient GetApproovHttpClient(string config);
+public static ApproovService CreateHttpClient()
 ```
 
 If you prefer providing your own message handler, you can invoke:
 
 ```C#
-public ApproovHttpClient GetApproovHttpClient(HttpMessageHandler handler, string config)
+public static ApproovService CreateHttpClient(HttpMessageHandler handler)
 ```
-
-It is possible to pass an empty `config` string to indicate that no initialization is required. Only do this if you are also using a different Approov quickstart in your app (which will use the same underlying Approov SDK) and this will have been initialized first.
 
 
 ## SetProceedOnNetworkFail
@@ -108,7 +104,7 @@ public static void RemoveExclusionURLRegex(string urlRegex)
 Performs a fetch to lower the effective latency of a subsequent token fetch or secure string fetch by starting the operation earlier so the subsequent fetch may be able to use cached data. This initiates the prefetch in a background thread.
 
 ```C#
-public static void Precheck();
+public static void Precheck()
 ```
 
 ## Precheck
@@ -131,23 +127,23 @@ public static string GetDeviceID();
 Directly sets the [token binding](https://approov.io/docs/latest/approov-usage-documentation/#token-binding) hash to be included in subsequently fetched Approov tokens. If the hash is different from any previously set value then this will cause the next token fetch operation to fetch a new token with the correct payload data hash. The hash appears in the `pay` claim of the Approov token as a base64 encoded string of the SHA256 hash of the data. Note that the data is hashed locally and never sent to the Approov cloud service. This is an alternative to using `setBindingHeader` and you should not use both methods at the same time.
 
 ```C#
-public static void SetDataHashInToken(string data);
+public static void SetDataHashInToken(string data)
 ```
 
 ## FetchToken
 Performs an Approov token fetch for the given `url`. This should be used in situations where it is not possible to use the networking interception to add the token. Note that the returned token should NEVER be cached by your app, you should call this function when it is needed.
 
 ```C#
-String fetchToken(String url) throws ApproovException
+public static string FetchToken(string url) throws ApproovSDKException
 ```
 
-This throws `ApproovException` if there was a problem obtaining an Approov token. This may require network access so may take some time to complete, and should not be called from the UI thread.
+This throws `ApproovSDKException` if there was a problem obtaining an Approov token. This may require network access so may take some time to complete, and should not be called from the UI thread.
 
 ## GetMessageSignature
 Gets the [message signature](https://approov.io/docs/latest/approov-usage-documentation/#message-signing) for the given `message`. This is returned as a base64 encoded signature. This feature uses an account specific message signing key that is transmitted to the SDK after a successful fetch if the facility is enabled for the account. Note that if the attestation failed then the signing key provided is actually random so that the signature will be incorrect. An Approov token should always be included in the message being signed and sent alongside this signature to prevent replay attacks.
 
 ```C#
-public static string FetchToken(string url) throws ApproovSDKException
+public static string GetMessageSignature(string url) throws ApproovSDKException
 ```
 
 This throws `ApproovSDKException` if there was a problem obtaining a signature.
