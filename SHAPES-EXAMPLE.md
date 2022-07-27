@@ -37,13 +37,13 @@ This contacts `https://shapes.approov.io/v1/shapes` to get the name of a random 
 
 ## ADD THE APPROOV SDK ENABLED HTTP CLIENT
 
-The ApproovSDK makes use of a custom `HttpClient` implementation, `ApproovHttpClient` and it is available as a NuGet package in the default repository `nuget.org`. Since the `ApproovHttpClient` uses platform specific code you will need to add the NuGet packages to the `ShapesApp.Android` and `ShapesApp.iOS` projects instead of the generic `ShapesApp` project. Select `Project` and `Manage NuGet Packages...` then select `Browse` and search for the `ApproovHttpClient` package.
+The ApproovSDK makes use of a custom `HttpClient` implementation, `ApproovHttpClient` and it is available as a NuGet package in the default repository `nuget.org`. Since the `ApproovHttpClient` uses platform specific code you will need to add the NuGet packages to the `ShapesApp.Android` and `ShapesApp.iOS` projects instead of the generic `ShapesApp` project. Select `Project` and `Manage NuGet Packages...` then select `Browse` and search for the `ApproovHttpClient` package. At the time of writing this document, version `3.0.7` was the latest one available.
 
 ![Add ApproovSDK Package](readme-images/add-nuget-packages.png)
 
 ## ADD THE APPROOV SDK
 
-The Approov SDK is available as a NuGet package in the default `nuget.org` repository.
+The Approov SDK is available as a NuGet package in the default `nuget.org` repository and the version available at the time this document is produced is `3.0.0`.
 
 ![Add ApproovSDK Package](readme-images/add-nuget-packages.png)
 
@@ -73,6 +73,10 @@ static string endpointVersion = "v3";
 To use Approov all you have to do is comment out the code using `HttpClient` and uncomment the line following that code, which enables the custom `ApproovHttpClient` code. Find the following lines in `GetShapePlatform.cs` source file:
 
 ```C#
+/* COMMENT this line if using Approov */
+private static HttpClient httpClient;
+/* UNCOMMENT this line if using Approov */
+//private static ApproovHttpClient httpClient;
 public GetShapePlatform()
 {
     /* Comment out the line to use Approov SDK */
@@ -83,6 +87,10 @@ public GetShapePlatform()
 ```
 Change the commented out lines so the code becomes:
 ```C#
+/* COMMENT this line if using Approov */
+//private static HttpClient httpClient;
+/* UNCOMMENT this line if using Approov */
+private static ApproovHttpClient httpClient;
 public GetShapePlatform()
 {
     /* Comment out the line to use Approov SDK */
