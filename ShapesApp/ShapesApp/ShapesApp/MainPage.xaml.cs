@@ -2,13 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using System.Net.Http;
-using Newtonsoft.Json;
-/* Uncomment the line to use Approov SDK */
-//using Approov;
 
 
 
@@ -20,20 +15,7 @@ namespace ShapesApp
     [DesignTimeVisible(false)]
     public partial class MainPage : ContentPage
     {
-        /* The endpoint version being used: v1 unprotected and v3 for Approov API protection */
-        static string endpointVersion = "v1";
-        /* The Shapes URL */
-        string shapesURL = "https://shapes.approov.io/" + endpointVersion + "/shapes/";
-        /* The Hello URL */
-        string helloURL = "https://shapes.approov.io/" + endpointVersion + "/hello/";
-        /* The secret key: REPLACE with shapes_api_key_placeholder if using SECRETS-PROTECTION */
-        string shapes_api_key = "yXClypapWNHIifHUWmBIyPFAm";
-        /* Comment out the line to use Approov SDK */
-        private static HttpClient httpClient;
-        
-        // The Dictionary to hold the images we display
         private Dictionary<string, string> allImages = new Dictionary<string, string>();
-        // The current image
         private ImageSource currentStatusImage;
         public ImageSource CurrentStatusImage
         {
@@ -71,15 +53,6 @@ namespace ShapesApp
             BindingContext = this;
             
             StatusLabelProperty = "Say Hello or Get Shape?";
-
-            /* Comment out the line to use Approov SDK */
-            httpClient = new HttpClient();
-            /* Uncomment the lines bellow to use Approov SDK */
-            //ApproovService.Initialize("<enter-your-config-string-here>");
-            //httpClient = ApproovService.CreateHttpClient();
-            // Add substitution header: Uncomment if using SECRETS-PROTECTION
-            //ApproovService.AddSubstitutionHeader("Api-Key", null);
-            httpClient.DefaultRequestHeaders.Add("Api-Key", shapes_api_key);
         }
 
         public void SetStatusImageFromString(string status)
@@ -96,16 +69,16 @@ namespace ShapesApp
             allImages.Add("square", "ShapesApp.Images.square.png");
             allImages.Add("triangle", "ShapesApp.Images.triangle.png");
         }
-        // Hello button press event
+
         protected void HelloEvent(object sender, EventArgs args) 
         {
             try
             {
-                Task<Dictionary<string, string>> response = GetHelloAsync();
-                Dictionary<string, string> responseData = response.Result;
+                Dictionary<string, string> responseData = DependencyService.Get<IGetShape>().GetHello();
                 if (!responseData.ContainsKey("text"))
                 {
                     SetStatusImageFromString("confused");
+                    //StatusLabelProperty = responseData["response"];
                 }
                 else
                 {
@@ -121,29 +94,11 @@ namespace ShapesApp
             }
         }
 
-        // Async network call to the hello endpoint
-        private async Task<Dictionary<string, string>> GetHelloAsync()
-        {
-            HttpResponseMessage response = await httpClient.GetAsync(helloURL).ConfigureAwait(false);
-            if (response.IsSuccessStatusCode)
-            {
-                var cont = await response.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<Dictionary<string, string>>(cont);
-                // Add HTTP response code
-                values["response"] = response.ReasonPhrase;
-                return values;
-            }
-            Dictionary<string, string> errorValues = new Dictionary<string, string>();
-            errorValues["response"] = response.ReasonPhrase;
-            return errorValues;
-        }
-        // Shape event button press
         protected void ShapeEvent(object sender, EventArgs args) 
         {
             try
             {
-                Task<Dictionary<string, string>> response = GetShapeAsync();
-                Dictionary<string, string> responseData = response.Result;
+                Dictionary<string, string> responseData = DependencyService.Get<IGetShape>().GetShape();
                 if (!responseData.ContainsKey("shape"))
                 {
                     SetStatusImageFromString("confused");
@@ -153,7 +108,7 @@ namespace ShapesApp
                 {
                     SetStatusImageFromString(responseData["shape"].ToLower());
                 }
-                StatusLabelProperty = responseData["response"];
+                //StatusLabelProperty = responseData["response"];
 
             }
             catch (Exception e)
@@ -162,22 +117,6 @@ namespace ShapesApp
                 SetStatusImageFromString("confused");
                 StatusLabelProperty = e.Message;
             }
-        }
-        // Async network call to the hello endpoint 
-        private async Task<Dictionary<string, string>> GetShapeAsync()
-        {
-            HttpResponseMessage response = await httpClient.GetAsync(shapesURL).ConfigureAwait(false);
-            if (response.IsSuccessStatusCode)
-            {
-                var cont = await response.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<Dictionary<string, string>>(cont);
-                // Add HTTP response code
-                values["response"] = response.ReasonPhrase;
-                return values;
-            }
-            Dictionary<string, string> errorValues = new Dictionary<string, string>();
-            errorValues["response"] = response.ReasonPhrase;
-            return errorValues;
         }
 
     }
