@@ -30,7 +30,7 @@ Click on the `Hello` button and you should see this:
 This checks the connectivity by connecting to the endpoint `https://shapes.approov.io/v1/hello`. Now press the `Shape` button and you will see this:
 
 <p>
-    <img src="readme-images/shapes-bad.png" width="256" title="Shapes Bad">
+    <img src="readme-images/shapes-good.png" width="256" title="Shapes Bad">
 </p>
 
 This contacts `https://shapes.approov.io/v1/shapes` to get the name of a random shape. It gets the http status code 200  because this endpoint is protected with a secret key which we hard coded in the source code. Next, you will add Approov into the app so that it can generate valid Approov tokens and get shapes using an approov token.
@@ -39,13 +39,13 @@ This contacts `https://shapes.approov.io/v1/shapes` to get the name of a random 
 
 The ApproovSDK makes use of a custom `HttpClient` implementation, `ApproovHttpClient` and it is available as a NuGet package in the default repository `nuget.org`. Since the `ApproovHttpClient` uses platform specific code you will need to add the NuGet packages to the `ShapesApp.Android` and `ShapesApp.iOS` projects instead of the generic `ShapesApp` project. Select `Project` and `Manage NuGet Packages...` then select `Browse` and search for the `ApproovHttpClient` package.
 
-![Add ApproovSDK Package](readme-images/add-http-client-package.png)
+![Add ApproovSDK Package](readme-images/add-nuget-packages.png)
 
 ## ADD THE APPROOV SDK
 
 The Approov SDK is available as a NuGet package in the default `nuget.org` repository.
 
-![Add ApproovSDK Package](readme-images/add-approovsdk-package.png)
+![Add ApproovSDK Package](readme-images/add-nuget-packages.png)
 
 Your project structure should now look like this:
 
@@ -60,12 +60,12 @@ $ approov api -add shapes.approov.io
 Tokens for this domain will be automatically signed with the specific secret for this domain, rather than the normal one for your account. Please, change the url to point to the Approov protected endpoint:
 
 ```C#
-string shapesURL = "https://shapes.approov.io/v1/shapes/";
+static string endpointVersion = "v1";
 ```
 to point to `v3`:
 
 ```C#
-string shapesURL = "https://shapes.approov.io/v3/shapes/";
+static string endpointVersion = "v3";
 ```
 
 ## MODIFY THE APP TO USE APPROOV
@@ -73,10 +73,6 @@ string shapesURL = "https://shapes.approov.io/v3/shapes/";
 To use Approov all you have to do is comment out the code using `HttpClient` and uncomment the line following that code, which enables the custom `ApproovHttpClient` code. Find the following lines in `GetShapePlatform.cs` source file:
 
 ```C#
-/* Comment out the line to use Approov SDK */
-private static HttpClient httpClient;
-/* Uncomment the line to use Approov SDK */
-//private static ApproovHttpClient httpClient;
 public GetShapePlatform()
 {
     /* Comment out the line to use Approov SDK */
@@ -87,10 +83,6 @@ public GetShapePlatform()
 ```
 Change the commented out lines so the code becomes:
 ```C#
-/* Comment out the line to use Approov SDK */
-//private static HttpClient httpClient;
-/* Uncomment the line to use Approov SDK */
-private static ApproovHttpClient httpClient;
 public GetShapePlatform()
 {
     /* Comment out the line to use Approov SDK */
@@ -102,7 +94,7 @@ public GetShapePlatform()
 
 The Approov SDK needs a configuration string to identify the account associated with the app. It will have been provided in the Approov onboarding email (it will be something like `#123456#K/XPlLtfcwnWkzv99Wj5VmAxo4CrU267J1KlQyoz8Qo=`). Copy this string replacing the text `<enter-your-config-string-here>`.
 
-You will also need to add the `using Approov;` directive to the top of the `GetShapePlatform.cs` source file.
+You will also need to uncomment the `using Approov;` directive to the top of the `GetShapePlatform.cs` source file.
 The `ApproovHttpClient` class adds the `Approov-Token` header and also applies pinning for the connections to ensure that no Man-in-the-Middle can eavesdrop on any communication being made. 
 
 ## REGISTER YOUR APP WITH APPROOV
@@ -156,11 +148,11 @@ Firstly, revert any previous change to `shapesURL` to using `https://shapes.appr
 
 ```C#
 * The Shapes URL */
-string shapesURL = "https://shapes.approov.io/v1/shapes/";
+static string endpointVersion = "v1";
 string shapes_api_key = "shapes_api_key_placeholder";
 ....
-ApproovService.DefaultRequestHeaders.Add("Api-Key", shapes_api_key);
 ApproovService.AddSubstitutionHeader("Api-Key", null);
+ApproovService.DefaultRequestHeaders.Add("Api-Key", shapes_api_key);
 ```
 
 Next we enable the [Secure Strings](https://approov.io/docs/latest/approov-usage-documentation/#secure-strings) feature:
