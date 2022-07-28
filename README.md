@@ -30,7 +30,7 @@ Your project structure should now look like this:
 ![Final Project View](readme-images/final-project-view.png)
 
 
-## RejectionReasons
+## USING THE APPROOVSERVICE
 
  Before using the `ApproovService` class, you need to initialize it with a configuration string. This will have been provided in your Approov onboarding email (it will be something like `#123456#K/XPlLtfcwnWkzv99Wj5VmAxo4CrU267J1KlQyoz8Qo=`). After initializing the `ApproovService` class, you can obtain an `ApproovHttpClient` and perform network requests:
 
