@@ -25,9 +25,6 @@ The Approov SDK is available as a NuGet package in the default repository `nuget
 
 ![Add ApproovSDK Package](readme-images/add-nuget-packages.png)
 
-Your project structure should now look like this:
-
-![Final Project View](readme-images/final-project-view.png)
 
 
 ## USING THE APPROOVSERVICE
