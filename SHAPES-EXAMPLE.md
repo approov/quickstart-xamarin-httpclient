@@ -1,4 +1,4 @@
-# Shapes Example
+# SHAPES EXAMPLE
 
 This quickstart is written specifically for native iOS apps that are written in C# for making the API calls that you wish to protect with Approov. This quickstart provides a step-by-step example of integrating Approov into an app using a simple `Shapes` example that shows a geometric shape based on a request to an API backend that can be protected with Approov.
 
@@ -105,6 +105,7 @@ to point to `v3`:
 
 ```C#
 static string endpointVersion = "v3";
+```
 
 ## REGISTER YOUR APP WITH APPROOV
 

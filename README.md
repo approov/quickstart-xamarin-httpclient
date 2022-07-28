@@ -1,4 +1,4 @@
-# Approov Quickstart: Xamarin HttpClient
+# APPROOV QUICKSTARTS: XAMARIN HTTPCLIENT
 
 This quickstart is written specifically for mobile iOS and Android apps that are written in C# for making the API calls that you wish to protect with Approov. The sample code shown in this guide makes use of HttpClient in order to access network resources. If this is not your situation then check if there is a more relevant quickstart guide available.
 
@@ -30,7 +30,7 @@ Your project structure should now look like this:
 ![Final Project View](readme-images/final-project-view.png)
 
 
-## USING THE ApproovService
+## RejectionReasons
 
  Before using the `ApproovService` class, you need to initialize it with a configuration string. This will have been provided in your Approov onboarding email (it will be something like `#123456#K/XPlLtfcwnWkzv99Wj5VmAxo4CrU267J1KlQyoz8Qo=`). After initializing the `ApproovService` class, you can obtain an `ApproovHttpClient` and perform network requests:
 
