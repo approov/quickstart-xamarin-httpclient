@@ -57,16 +57,7 @@ In order for Approov tokens to be generated for `https://shapes.approov.io/v3/sh
 ```
 $ approov api -add shapes.approov.io
 ```
-Tokens for this domain will be automatically signed with the specific secret for this domain, rather than the normal one for your account. Please, change the url to point to the Approov protected endpoint:
-
-```C#
-static string endpointVersion = "v1";
-```
-to point to `v3`:
-
-```C#
-static string endpointVersion = "v3";
-```
+Tokens for this domain will be automatically signed with the specific secret for this domain, rather than the normal one for your account. 
 
 ## MODIFY THE APP TO USE APPROOV
 
@@ -104,6 +95,16 @@ The Approov SDK needs a configuration string to identify the account associated 
 
 You will also need to uncomment the `using Approov;` directive to the top of the `GetShapePlatform.cs` source file.
 The `ApproovHttpClient` class adds the `Approov-Token` header and also applies pinning for the connections to ensure that no Man-in-the-Middle can eavesdrop on any communication being made. 
+
+Finally, please, change the url to point to the Approov protected endpoint:
+
+```C#
+static string endpointVersion = "v1";
+```
+to point to `v3`:
+
+```C#
+static string endpointVersion = "v3";
 
 ## REGISTER YOUR APP WITH APPROOV
 
@@ -155,7 +156,7 @@ This section provides an illustration of an alternative option for Approov prote
 Firstly, revert any previous change to `shapesURL` to using `https://shapes.approov.io/v1/shapes/` that simply checks for an API key. The `shapes_api_key` should also be changed to `shapes_api_key_placeholder`, removing the actual API key out of the code:
 
 ```C#
-* The Shapes URL */
+/* The Shapes URL */
 static string endpointVersion = "v1";
 string shapes_api_key = "shapes_api_key_placeholder";
 ....

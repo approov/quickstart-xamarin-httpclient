@@ -11,6 +11,10 @@ If a method throws an `NetworkingErrorException` (a subclass of `ApproovExceptio
 
 If a method throws an `RejectionException` (a subclass of `ApproovException`) the this indicates the problem was that the app failed attestation. An additional property, `ARC`, provides the [Attestation Response Code](https://approov.io/docs/latest/approov-usage-documentation/#attestation-response-code), which could be provided to the user for communication with your app support to determine the reason for failure, without this being revealed to the end user. The property `RejectionReasons` provides the [Rejection Reasons](https://approov.io/docs/latest/approov-usage-documentation/#rejection-reasons) if the feature is enabled, providing a comma separated list of reasons why the app attestation was rejected.
 
+## ApproovService
+
+The `ApproovService` class implements platform specific code only usable in projects targetting either or both iOS and Android. It is possible to use a Xamarin Forms app to provide UI and application logic but ultimately, the `ApproovService` needs to access platform specific code which is only available in Android and iOS.
+
 ## Initialize
 Initializes the Approov SDK and thus enables the Approov features. The `config` will have been provided in the initial onboarding or email or can be [obtained](https://approov.io/docs/latest/approov-usage-documentation/#getting-the-initial-sdk-configuration) using the approov CLI. This will generate an error if a second attempt is made at initialization with a different `config`.
 
@@ -20,6 +24,8 @@ ApproovService.Initialize(string config)
 
 It is possible to pass an empty `config` string to indicate that no initialization is required. Only do this if you are also using a different Approov quickstart in your app (which will use the same underlying Approov SDK) and this will have been initialized first.
 
+
+## CreateHttpClient
 The preffered way to obtain an Approov enabled HttpClient, for both iOS and Android, is by using:
 
 ```C#
