@@ -7,8 +7,8 @@ This quickstart provides the basic steps for integrating Approov into your app. 
 To follow this guide you should have received an onboarding email for a trial or paid Approov account.
 
 Note that the minimum OS requirement for iOS is 10 and for Android the minimum SDK version is 21 (Android 5.0). You cannot use Approov in apps that need to support OS versions older than this.
-We will use the latest versions of the `nuget.org` packages, `ApproovSDK-3.0.0` and `ApproovHttpClient-3.0.5`.  
-> **WARNING Obsolete dependency**: The package `ApproovHttpClient-Platform-Specific` has been obsoleted and should not be used any longer, since the features this package contains are present in the package `ApproovHttpClient-3.0.5`.
+We will use the latest versions of the `nuget.org` packages, `ApproovSDK-3.0.0` and `ApproovHttpClient-3.0.7`.  
+> **WARNING Obsolete dependency**: The package `ApproovHttpClient-Platform-Specific` has been obsoleted and should not be used any longer.
 
 
 ## ADDING THE APPROOV SERVICE
