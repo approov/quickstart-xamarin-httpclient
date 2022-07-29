@@ -43,9 +43,7 @@ The ApproovSDK makes use of a custom `HttpClient` implementation, `ApproovHttpCl
 
 ## ADD THE APPROOV SDK
 
-The Approov SDK is available as a NuGet package in the default `nuget.org` repository and the version available at the time this document is produced is `3.0.0`.
-
-![Add ApproovSDK Package](readme-images/add-nuget-packages.png)
+The Approov SDK is also available as a NuGet package in the default `nuget.org` repository and the version available at the time this document is produced is `ApproovSDK-3.0.0`.
 
 Your project structure should now look like this:
 
