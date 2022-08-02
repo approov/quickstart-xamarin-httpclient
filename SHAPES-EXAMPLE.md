@@ -8,6 +8,7 @@ This quickstart is written specifically for native iOS apps that are written in 
 * [Visual Studio](https://visualstudio.microsoft.com/vs/mac/) with Xamarin extensions (Mac version 17.0.6 is used in this guide)
 * The contents of the folder containing this README
 * An Apple mobile device with iOS 10 or higher or an Android 5.0+ device. Alternatively, iOS simulator or Android emulator would suffice
+* Nuget packages supporting the native Approov SDK: `ApproovSDK` version `3.0.0` and `ApproovHttpClient` version `3.0.7`.
 
 ## RUNNING THE SHAPES APP WITHOUT APPROOV
 
@@ -37,13 +38,13 @@ This contacts `https://shapes.approov.io/v1/shapes` to get the name of a random 
 
 ## ADD THE APPROOV SDK ENABLED HTTP CLIENT
 
-The ApproovSDK makes use of a custom `HttpClient` implementation, `ApproovHttpClient` and it is available as a NuGet package in the default repository `nuget.org`. Since the `ApproovHttpClient` uses platform specific code you will need to add the NuGet packages to the `ShapesApp.Android` and `ShapesApp.iOS` projects instead of the generic `ShapesApp` project. Select `Project` and `Manage NuGet Packages...` then select `Browse` and search for the `ApproovHttpClient` package. At the time of writing this document, version `3.0.7` was the latest one available.
+The ApproovSDK makes use of a custom `HttpClient` implementation, `ApproovHttpClient` and it is available as a NuGet package in the default repository `nuget.org`. Since the `ApproovHttpClient` uses platform specific code you will need to add the NuGet packages to the `ShapesApp.Android` and `ShapesApp.iOS` projects instead of the generic `ShapesApp` project. Select `Project` and `Manage NuGet Packages...` then select `Browse` and search for the `ApproovHttpClient` package.
 
 ![Add ApproovSDK Package](readme-images/add-nuget-packages.png)
 
 ## ADD THE APPROOV SDK
 
-The Approov SDK is also available as a NuGet package in the default `nuget.org` repository and the version available at the time this document is produced is `ApproovSDK-3.0.0`.
+The Approov SDK is also available as a NuGet package in the default `nuget.org` repository and is conveniently named `ApproovSDK`.
 
 Your project structure should now look like this:
 
