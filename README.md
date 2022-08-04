@@ -11,19 +11,16 @@ We will use the latest versions of the `nuget.org` packages, `ApproovSDK-3.0.0` 
 > **WARNING Obsolete dependency**: The package `ApproovHttpClient-Platform-Specific` has been obsoleted and should not be used any longer.
 
 
-## ADDING THE APPROOV SERVICE
+## ADDING THE APPROOV SERVICE AND THE APPROOV SDK
 
-The Approov SDK makes use of a custom `HttpClient` implementation, `ApproovHttpClient` and it is available as a NuGet package in the default repository `nuget.org`. The `ApproovHttpClient` includes platform specific code in the `ApproovService` class. The `ShapesApp.Android` and `ShapesApp.iOS` projects require the `ApproovHttpClient` package in order to use the Approov enabled service. Select `Project` and `Manage NuGet Packages...` then select `Browse` and search for the `ApproovHttpClient` package.
+The Approov SDK makes use of a custom `HttpClient` implementation, `ApproovHttpClient` and it is available as a NuGet package in the default repository `nuget.org`. The `ApproovHttpClient` includes platform specific code in the `ApproovService` class. The `ShapesApp.Android` and `ShapesApp.iOS` projects require the `ApproovHttpClient` package in order to use the Approov enabled service, alongside the `ApproovSDK` package which contains the native bindings. Select `Project` and `Manage NuGet Packages...` then select `Browse` and search for the `ApproovHttpClient` and `ApproovSDK` packages.
 
 ![Add ApproovSDK Package](readme-images/add-nuget-packages.png)
 
-Select and install the latest available package.
+Select and install the latest available versions.
 
-## ADDING THE APPROOV SDK
 
-The Approov SDK is available as a NuGet package in the default repository `nuget.org`,  the packages name being `ApproovSDK`.
-
-## USING THE APPROOVSERVICE
+## USING THE APPROOV SERVICE
 
  Before using the `ApproovService` class, you need to initialize it with a configuration string. This will have been provided in your Approov onboarding email (it will be something like `#123456#K/XPlLtfcwnWkzv99Wj5VmAxo4CrU267J1KlQyoz8Qo=`). After initializing the `ApproovService` class, you can obtain an `ApproovHttpClient` and perform network requests:
 
