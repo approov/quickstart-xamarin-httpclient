@@ -52,10 +52,12 @@ Your project structure should now look like this:
 
 ## ENSURE THE SHAPES API IS PROTECTED
 
-In order for Approov tokens to be generated for `https://shapes.approov.io/v3/shapes` it is necessary to inform Approov about it. 
+In order for Approov tokens to be generated for `https://shapes.approov.io/v3/shapes` it is necessary to inform Approov about it: 
+
 ```
-$ approov api -add shapes.approov.io
+approov api -add shapes.approov.io
 ```
+
 Tokens for this domain will be automatically signed with the specific secret for this domain, rather than the normal one for your account. 
 
 ## MODIFY THE APP TO USE APPROOV
@@ -116,9 +118,10 @@ Select the `Build` menu and then `Archive for Publishing`. Once the archive file
 
 ![Build IPA Result](readme-images/build-ipa-result.png)
 
-You can now register the ios application with the Approov service:
+You can now register the iOS application with Approov:
+
 ```
-$ approov registration -add ShapesApp.ipa
+approov registration -add ShapesApp.ipa
 ```
 
 At the time of writing this README there is a bug in the latest version of `Xamarin.Forms` (Version="4.7.0.1080") where [building fails de to problems with AndroidManifest file](https://github.com/xamarin/Xamarin.Forms/issues/11233). Please follow the solution in the bug report to build the `ShapesApp` apk file or use the provided `Xamarin.Forms` package version (Version="4.5.0.356").
