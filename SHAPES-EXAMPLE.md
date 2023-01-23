@@ -38,7 +38,7 @@ This contacts `https://shapes.approov.io/v1/shapes` to get the name of a random 
 
 ## ADD THE APPROOV SDK
 
-The Approov SDK is available as a NuGet package in the default `nuget.org` repository and is conveniently named `ApproovSDK`. Since the `ApproovSDK` uses platform specific code you will need to add the NuGet packages to the `ShapesApp.Android` and `ShapesApp.iOS` projects instead of the generic `ShapesApp` project. Select `Project` and `Manage NuGet Packages...` then select `Browse` and search for the `ApproovSDK` package.
+The Approov SDK is available as a NuGet package in the default `nuget.org` repository and is conveniently named `ApproovSDK`. Since the `ApproovSDK` uses platform specific code you will need to add the NuGet packages to the `ShapesApp.Android` and `ShapesApp.iOS` projects instead of the generic `ShapesApp` project. Select `Project` and `Manage NuGet Packages...` then select `Browse` and search for the `ApproovSDK` package. Additionally, you need to remove the `System.Net.Http` package from both projects, since a custom subclass, `ApproovHttpClient` implements its functionality and is part of the `ApproovSDK` package.
 
 Your project structure should now look like this:
 
