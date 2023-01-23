@@ -14,7 +14,7 @@ namespace ShapesApp.Droid
     public class GetShapePlatform : IGetShape
     {
         /* The endpoint version being used: v1 unprotected and v3 for Approov API protection */
-        static string endpointVersion = "v3";
+        static string endpointVersion = "v1";
         /* The Shapes URL */
         string shapesURL = "https://shapes.approov.io/" + endpointVersion + "/shapes/";
         /* The Hello URL */
