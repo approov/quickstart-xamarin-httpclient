@@ -17,7 +17,7 @@ The Approov SDK makes use of a custom `HttpClient` implementation, `ApproovHttpC
 
 ![Add ApproovSDK Package](readme-images/add-nuget-packages.png)
 
-Select and install the latest available version.
+Select and install the latest available version. Please note, that `Android` applications require an additional package: `Square.OkHttp3`. The version used in the `SahpesApp.Android` is `4.2.2`.
 
 
 ## USING THE APPROOV SERVICE
