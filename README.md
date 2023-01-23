@@ -7,17 +7,17 @@ This quickstart provides the basic steps for integrating Approov into your app. 
 To follow this guide you should have received an onboarding email for a trial or paid Approov account.
 
 Note that the minimum OS requirement for iOS is 10 and for Android the minimum SDK version is 21 (Android 5.0). You cannot use Approov in apps that need to support OS versions older than this.
-We will use the latest versions of the `nuget.org` packages, `ApproovSDK-3.0.0` and `ApproovHttpClient-3.0.7`.  
-> **WARNING Obsolete dependency**: The package `ApproovHttpClient-Platform-Specific` has been obsoleted and should not be used any longer.
+We will use the latest versions of the `nuget.org` package, `ApproovSDK-3.1.0`.  
+> **WARNING Obsolete dependency**: The packages `ApproovHttpClient` and `ApproovHttpClient-Platform-Specific` has been obsoleted and should not be used any longer.
 
 
-## ADDING THE APPROOV SERVICE AND THE APPROOV SDK
+## ADDING THE APPROOV SDK
 
-The Approov SDK makes use of a custom `HttpClient` implementation, `ApproovHttpClient` and it is available as a NuGet package in the default repository `nuget.org`. The `ApproovHttpClient` includes platform specific code in the `ApproovService` class. The `ShapesApp.Android` and `ShapesApp.iOS` projects require the `ApproovHttpClient` package in order to use the Approov enabled service, alongside the `ApproovSDK` package which contains the native bindings. Select `Project` and `Manage NuGet Packages...` then select `Browse` and search for the `ApproovHttpClient` and `ApproovSDK` packages.
+The Approov SDK makes use of a custom `HttpClient` implementation, `ApproovHttpClient` and it makes use of platform specific code in the `ApproovService` class. The `ShapesApp.Android` and `ShapesApp.iOS` projects require the `ApproovSDK` package in order to use the Approov enabled service. Select `Project` and `Manage NuGet Packages...` then select `Browse` and search for the `ApproovSDK` package.
 
 ![Add ApproovSDK Package](readme-images/add-nuget-packages.png)
 
-Select and install the latest available versions.
+Select and install the latest available version.
 
 
 ## USING THE APPROOV SERVICE

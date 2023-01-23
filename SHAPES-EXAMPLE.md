@@ -5,10 +5,10 @@ This quickstart is written specifically for native iOS apps that are written in 
 ## WHAT YOU WILL NEED
 * Access to a trial or paid Approov account
 * The `approov` command line tool [installed](https://approov.io/docs/latest/approov-installation/) with access to your account
-* [Visual Studio](https://visualstudio.microsoft.com/vs/mac/) with Xamarin extensions (Mac version 17.0.6 is used in this guide)
+* [Visual Studio](https://visualstudio.microsoft.com/vs/mac/) with Xamarin extensions (Mac version 8.10.25 is used in this guide)
 * The contents of the folder containing this README
 * An Apple mobile device with iOS 10 or higher or an Android 5.0+ device. Alternatively, iOS simulator or Android emulator would suffice
-* Nuget packages supporting the native Approov SDK: `ApproovSDK` version `3.0.0` and `ApproovHttpClient` version `3.0.7`.
+* Nuget packages supporting the native Approov SDK: `ApproovSDK` version `3.1.0`.
 
 ## RUNNING THE SHAPES APP WITHOUT APPROOV
 
@@ -36,15 +36,9 @@ This checks the connectivity by connecting to the endpoint `https://shapes.appro
 
 This contacts `https://shapes.approov.io/v1/shapes` to get the name of a random shape. It gets the http status code 200  because this endpoint is protected with a secret key which we hard coded in the source code. Next, you will add Approov into the app so that it can generate valid Approov tokens and get shapes using an approov token.
 
-## ADD THE APPROOV SDK ENABLED HTTP CLIENT
-
-The ApproovSDK makes use of a custom `HttpClient` implementation, `ApproovHttpClient` and it is available as a NuGet package in the default repository `nuget.org`. Since the `ApproovHttpClient` uses platform specific code you will need to add the NuGet packages to the `ShapesApp.Android` and `ShapesApp.iOS` projects instead of the generic `ShapesApp` project. Select `Project` and `Manage NuGet Packages...` then select `Browse` and search for the `ApproovHttpClient` package.
-
-![Add ApproovSDK Package](readme-images/add-nuget-packages.png)
-
 ## ADD THE APPROOV SDK
 
-The Approov SDK is also available as a NuGet package in the default `nuget.org` repository and is conveniently named `ApproovSDK`.
+The Approov SDK is available as a NuGet package in the default `nuget.org` repository and is conveniently named `ApproovSDK`. Since the `ApproovSDK` uses platform specific code you will need to add the NuGet packages to the `ShapesApp.Android` and `ShapesApp.iOS` projects instead of the generic `ShapesApp` project. Select `Project` and `Manage NuGet Packages...` then select `Browse` and search for the `ApproovSDK` package.
 
 Your project structure should now look like this:
 
@@ -125,6 +119,7 @@ approov registration -add ShapesApp.ipa
 ```
 
 At the time of writing this README there is a bug in the latest version of `Xamarin.Forms` (Version="4.7.0.1080") where [building fails de to problems with AndroidManifest file](https://github.com/xamarin/Xamarin.Forms/issues/11233). Please follow the solution in the bug report to build the `ShapesApp` apk file or use the provided `Xamarin.Forms` package version (Version="4.5.0.356").
+Please, also note if you are using an Android device, you might not connect to the `shapes.approov.io` endpoint unless you [Disable the expired DST Root CA X3](https://community.letsencrypt.org/t/solution-to-xamarin-forms-android-certificate-verify-failed/161256) in the Android Certificate settings.
 
 ## RUNNING THE SHAPES APP WITH APPROOV
 
