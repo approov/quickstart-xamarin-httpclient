@@ -1,6 +1,6 @@
 # SHAPES EXAMPLE
 
-This quickstart is written specifically for native iOS apps that are written in C# for making the API calls that you wish to protect with Approov. This quickstart provides a step-by-step example of integrating Approov into an app using a simple `Shapes` example that shows a geometric shape based on a request to an API backend that can be protected with Approov.
+This quickstart is written specifically for native iOS and Android apps that are written in C# for making the API calls that you wish to protect with Approov. This quickstart provides a step-by-step example of integrating Approov into an app using a simple `Shapes` example that shows a geometric shape based on a request to an API backend that can be protected with Approov.
 
 ## WHAT YOU WILL NEED
 * Access to a trial or paid Approov account
