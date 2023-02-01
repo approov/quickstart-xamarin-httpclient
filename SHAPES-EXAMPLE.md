@@ -8,7 +8,7 @@ This quickstart is written specifically for native iOS and Android apps that are
 * [Visual Studio](https://visualstudio.microsoft.com/vs/mac/) with Xamarin extensions (Mac version 8.10.25 is used in this guide)
 * The contents of the folder containing this README
 * An Apple mobile device with iOS 10 or higher or an Android 5.0+ device. Alternatively, iOS simulator or Android emulator would suffice
-* Nuget packages supporting the native Approov SDK: `ApproovSDK` version `3.1.0` and `Square.OkHttp3` version `4.2.2` if targetting Android
+* Nuget packages supporting the native Approov SDK: `ApproovSDK` version `3.1.1`, `ApproovHttpClient` version `3.1.0` and `Square.OkHttp3` version `4.2.2` if targetting Android
 
 ## RUNNING THE SHAPES APP WITHOUT APPROOV
 
@@ -38,7 +38,7 @@ This contacts `https://shapes.approov.io/v1/shapes` to get the name of a random 
 
 ## ADD THE APPROOV SDK
 
-The Approov SDK is available as a NuGet package in the default `nuget.org` repository and is conveniently named `ApproovSDK`. Since the `ApproovSDK` uses platform specific code you will need to add the NuGet packages to the `ShapesApp.Android` and `ShapesApp.iOS` projects instead of the generic `ShapesApp` project. Select `Project` and `Manage NuGet Packages...` then select `Browse` and search for the `ApproovSDK` package. Additionally, you need to remove the `System.Net.Http` package from both projects, since a custom subclass, `ApproovHttpClient` implements its functionality and is part of the `ApproovSDK` package.
+The Approov SDK is available as a NuGet package in the default `nuget.org` repository and is conveniently named `ApproovSDK`. Since the `ApproovSDK` uses platform specific code you will need to add the NuGet packages to the `ShapesApp.Android` and `ShapesApp.iOS` projects instead of the generic `ShapesApp` project. Select `Project` and `Manage NuGet Packages...` then select `Browse` and search for the `ApproovSDK` package. Additionally, you need to remove the `System.Net.Http` package from both projects, since a custom subclass, `ApproovHttpClient` implements its functionality and is part of the `ApproovHttpClient` package.
 
 Your project structure should now look like this:
 
