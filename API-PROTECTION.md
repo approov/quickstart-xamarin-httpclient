@@ -62,7 +62,6 @@ ApproovService.SetDevKey("uDW9FuLVpL1_4zo1");
 
 See [using a development key](https://approov.io/docs/latest/approov-usage-documentation/#using-a-development-key) to understand how to obtain the development key which is the parameter to the call.
 
-
 ### Changing Approov Token Header Name
 The default header name of `Approov-Token` can be changed as follows:
 
