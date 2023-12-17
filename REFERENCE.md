@@ -38,7 +38,6 @@ If you prefer providing your own message handler, you can invoke:
 ApproovHttpClient ApproovService.CreateHttpClient(HttpMessageHandler handler)
 ```
 
-
 ## SetProceedOnNetworkFail
 If the provided `proceed` value is `true` then this indicates that the network interceptor should proceed anyway if it is not possible to obtain an Approov token due to a networking failure. If this is called then the backend API can receive calls without the expected Approov token header being added, or without header/query parameter substitutions being made. This should only ever be used if there is some particular reason, perhaps due to local network conditions, that you believe that traffic to the Approov cloud service will be particularly problematic.
 
@@ -47,6 +46,13 @@ void ApproovService.SetProceedOnNetworkFailure(bool proceed)
 ```
 
 Note that this should be used with *CAUTION* because it may allow a connection to be established before any dynamic pins have been received via Approov, thus potentially opening the channel to a MitM.
+
+## setDevKey
+[Sets a development key](https://approov.io/docs/latest/approov-usage-documentation/#using-a-development-key) in order to force an app to be passed. This can be used if the app has to be resigned in a test environment and would thus fail attestation otherwise.
+
+```C#
+void ApproovService.SetDevKey(string devKey)
+```
 
 ## SetTokenHeaderAndPrefix
 Sets the `header` that the Approov token is added on, as well as an optional `prefix` String (such as "`Bearer `"). Set `prefix` to the empty string if it is not required. By default the token is provided on `Approov-Token` with no prefix.

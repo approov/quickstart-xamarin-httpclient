@@ -2,14 +2,14 @@
 
 This quickstart is written specifically for mobile iOS and Android apps that are written in C# for making the API calls that you wish to protect with Approov. The sample code shown in this guide makes use of HttpClient in order to access network resources. If this is not your situation then check if there is a more relevant quickstart guide available.
 
-This quickstart provides the basic steps for integrating Approov into your app. A more detailed step-by-step guide using a [Shapes App Example](https://github.com/approov/quickstart-xamarin-httpclient/blob/master/SHAPES-EXAMPLE.md) is also available.
+This page provides all the steps for integrating Approov into your app. Additionally, a step-by-step tutorial guide using our [Shapes App Example](https://github.com/approov/quickstart-xamarin-httpclient/blob/master/SHAPES-EXAMPLE.md) is also available.
 
 To follow this guide you should have received an onboarding email for a trial or paid Approov account.
 
 Note that the minimum OS requirement for iOS is 10 and for Android the minimum SDK version is 21 (Android 5.0). You cannot use Approov in apps that need to support OS versions older than this.
+
 We will use the latest versions of the `nuget.org` packages, `ApproovSDK-3.1.2` and `ApproovHttpClient.3.1.0`.  
 > **WARNING Obsolete dependency**: The package `ApproovHttpClient-Platform-Specific` has been obsoleted and should not be used any longer.
-
 
 ## ADDING THE APPROOV SDK
 
@@ -18,7 +18,6 @@ The Approov SDK makes use of a custom `HttpClient` implementation, `ApproovHttpC
 ![Add ApproovSDK Package](readme-images/add-nuget-packages.png)
 
 Select and install the latest available version. Follow the same procedure to install `ApproovHttpClient` package. Please note, that `Android` applications require an additional package: `Square.OkHttp3`. The version used in the `SahpesApp.Android` is `4.2.2`.
-
 
 ## USING THE APPROOV SERVICE
 
